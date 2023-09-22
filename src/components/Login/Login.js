@@ -5,24 +5,23 @@ import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
 
 const emailReducer = (state, action) => {
-  debugger
+  
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.includes("@") };
   }
   if (action.type === "INPUT_BLUR") {
     return { value: state.value, isValid: state.value.includes("@") };
   }
-  return { value: null, isValid: false };
+  return { value: null, isValid: null };
 };
 const passwordReducer = (state, action) => {
-  debugger
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.length > 6 };
   }
   if (action.type === "INPUT_BLUR") {
     return { value: state.value, isValid: state.value.length > 6 };
   }
-  return { value: null, isValid: false };
+  return { value: null, isValid: null };
 };
 const Login = (props) => {
   // const [enteredEmail, setEnteredEmail] = useState("");
@@ -33,14 +32,13 @@ const Login = (props) => {
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
-    isValid: false,
+    isValid: null,
   });
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     value: "",
-    isValid: false,
+    isValid: null,
   });
   // useEffect(() => {
-  //   debugger
   //   console.log("EFFECT RUNNING");
 
   //   return () => {
@@ -51,7 +49,6 @@ const Login = (props) => {
   // const { isValid: passwordIsValid } = passwordState;
 
   useEffect(() => {
-    debugger
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
       setFormIsValid(emailState.isValid && passwordState.isValid);
@@ -61,7 +58,7 @@ const Login = (props) => {
       console.log("CLEANUP");
       clearTimeout(identifier);
     };
-  }, [emailState.isValid, passwordState.isValid]);
+  }, [emailState.isValid, passwordState.isValid]);//Sadece bu değerler değişir ise içeri giriyor, böylece her değişimde form validation yapmıyor. Bunlar ise reducerde değişiyor.reducer'a da form input değişikliklerinde gidiyor her defasında.
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
